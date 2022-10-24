@@ -3,24 +3,29 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 module.exports = {
   mode: "development",
   devtool: "eval-source-map",
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: [/\.js$/, /\.ts$/],
         exclude: /node_modules/,
         use: {
           loader: "babel-loader"
         }
       },
       {
+				test: /\.css$/,
+				use: ['style-loader', 'css-loader']
+			},
+      {
         test: [/\.vert$/, /\.frag$/],
         use: "raw-loader"
       },
       {
-        test: /\.(gif|png|jpe?g|svg|xml)$/i,
+        test: /\.(gif|png|jpe?g|svg|xml|ttf)$/i,
         use: "file-loader"
       },
       {
@@ -63,6 +68,7 @@ module.exports = {
       template: "./index.html"
     }),
     new ForkTsCheckerWebpackPlugin(),
+    new MonacoWebpackPlugin()
   ],
   // entry: ['./src/app.ts','./src/scss/main.scss'],
   resolve: {
